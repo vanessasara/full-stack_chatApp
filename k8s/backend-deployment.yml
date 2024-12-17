@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
+  name: backend-deployment
   namespace: chat-app
 spec:
   replicas: 1
@@ -10,12 +10,14 @@ spec:
       app: backend
   template:
     metadata:
-      labels:
+      name: backend-pod
+      namespace: chat-app
+      labels: 
         app: backend
     spec:
       containers:
-      - name: backend
-        image: iemafzal/f-s_backend:v1  
+      - name: chatapp-backend
+        image: trainwithshubham/chatapp-backend:latest
         ports:
         - containerPort: 5001
         env:
@@ -26,7 +28,7 @@ spec:
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: jwt-secret
-              key: jwt
+              name: chatapp-secrets
+              key: jwt 
         - name: PORT
           value: "5001"
